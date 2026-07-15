@@ -304,12 +304,19 @@ prefix = nd@ % prefix with nd@ for compatibility with old code
   \setkeys{fitch}{#1}%
   \nd@init\nd@resumec\ignorespaces}
   {\nd@endc\endgroup}
-\newenvironment{fitchproof}[1][]
-  {\begin{list}{}{\setlength{\leftmargin}{0pt}}\item\begin{nd}[#1]}
-  {\end{nd}\end{list}}
-\newenvironment{fitchproof*}[1][]
-  {\begin{list}{}{\setlength{\leftmargin}{0pt}}\item\begin{ndresume}[#1]}
-  {\end{ndresume}\end{list}}
+% \newenvironment{fitchproof}[1][]
+%   {\begin{list}{}{\setlength{\leftmargin}{0pt}}\item\begin{nd}[#1]}
+%   {\end{nd}\end{list}}
+% \newenvironment{fitchproof*}[1][]
+%   {\begin{list}{}{\setlength{\leftmargin}{0pt}}\item\begin{ndresume}[#1]}
+%   {\end{ndresume}\end{list}}
 
+% Better code to avoid a list in tagged PDF
+\newenvironment{fitchproof}[1][]
+  {\begin{flushleft}\begin{nd}[#1]}
+  {\end{nd}\end{flushleft}}
+\newenvironment{fitchproof*}[1][]
+  {\begin{flushleft}\begin{ndresume}[#1]}
+  {\end{ndresume}\end{flushleft}}
 % End of file fitch.sty
 
