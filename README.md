@@ -18,7 +18,7 @@ style, as in the following example:
 ![](fitchexample.png)
 
 ```
-\begin{nd}
+\begin{fitchproof}
   \hypo {1} {\forall y \neg P(y)}
   \open          
     \hypo {2} {\exists x P(x)}
@@ -31,12 +31,17 @@ style, as in the following example:
     \have {6a} {\bot}                 \Ee{2,3-6}
   \close
   \have {7} {\neg \exists x P(x)}     \ni{2-6a}
-\end{nd}         
+\end{fitchproof}         
 ```
 
 The output is shown above, and the corresponding LaTeX code below.
 
 ## Changes
+
+**v1.1, September 7, 2026** Basic support for tagged PDFs. Using `nd`
+in math mode now discouraged.
+
+**v1.0, December 17, 2023** Final v1.0
 
 **v1.0-beta, October 15, 2023** Adds `outerline` option; improves
 `\by`; fixes spacing when using `tabular`
