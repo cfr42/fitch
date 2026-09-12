@@ -38,7 +38,7 @@ The output is shown above, and the corresponding LaTeX code below.
 
 ## Changes
 
-**v1.1, September 7, 2026** Basic support for tagged PDFs. Using `nd`
+**v1.1, September 12, 2026** Basic support for tagged PDFs. Using `nd`
 in math mode now discouraged.
 
 **v1.0, December 17, 2023** Final v1.0

@@ -18,7 +18,7 @@
 
 % Original Author: Peter Selinger, Dalhousie University
 % Created: Jan 14, 2002
-% Modified: September 7, 2026
+% Modified: September 12, 2026
 % Version: 1.1
 % Copyright: (C) 2002-2026 Peter Selinger, Richard Zach
 % Filename: fitch.sty
@@ -49,7 +49,7 @@
 % \end{fitchproof}
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{fitch}[2026-09-07 v1.1 Macros for Fitch-style natural deduction]
+\ProvidesPackage{fitch}[2026-09-12 v1.1 Macros for Fitch-style natural deduction]
 
 % Define keyval options
 
@@ -121,10 +121,10 @@ prefix = nd@ % prefix with nd@ for compatibility with old code
 % \nd@math, \nd@nomath - Don't produce MathML when not necessary for
 % line numbers that are just arabic numerals.
 
-\ifdefined\UseMathForPositioningText\else\def\UseMathForPositioningText{}\fi
+\ifdefined\MathCollectTrue\else\def\MathCollectTrue{}\def\MathCollectFalse{}\fi
 
 \def\nd@math#1{\mbox{$#1$}}
-\def\nd@nomath#1{\mbox{\UseMathForPositioningText$#1$}}
+\def\nd@nomath#1{\mbox{\MathCollectFalse$#1$\MathCollectTrue}}
 
 %\def\nd@nomath#1{#1}
 
@@ -137,7 +137,7 @@ prefix = nd@ % prefix with nd@ for compatibility with old code
 \def\nd@numo#1#2{\edef\x{#1}%
   %\x%
   \expandafter\global\expandafter\let\csname nd@-#2\endcsname\x%
-  \nd@ref{#2}\typeout{\meaning\x}}
+  \nd@ref{#2}}
 \def\nd@ref#1{\expandafter\let\expandafter\x\csname nd@-#1\endcsname\ifx\x\relax%
   \PackageWarning{fitch}{Undefined line reference: #1}\mbox{\textbf{??}}\else\csname\nd@refformat\endcsname{\x}\fi}
 \def\nd@noop{}

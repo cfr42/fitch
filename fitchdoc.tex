@@ -1,6 +1,6 @@
 %% fitchdoc.tex
 %% Macros for Fitch-style natural deduction (documentation)
-%% Copyright 2002-2023 Peter Selinger
+%% Copyright 2002-2026 Peter Selinger
 %
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3
@@ -18,9 +18,9 @@
 
 % Original Author: Peter Selinger, Dalhousie University
 % Created: Jan 14, 2002
-% Modified: Dec 17, 2023
-% Version: 1.0
-% Copyright: (C) 2002-2023 Peter Selinger, Richard Zach
+% Modified: September 12, 2026
+% Version: 1.1
+% Copyright: (C) 2002-2026 Peter Selinger, Richard Zach
 % Filename: fitch.sty
 % Documentation: fitchdoc.tex
 % https://github.com/OpenLogicProject/fitch/
@@ -56,7 +56,7 @@ where you can also report any
 \href{https://github.com/OpenLogicProject/fitch/issues}{issues} with
 it.}}
 
-\date{Version 1.1\\ September 7, 2026}
+\date{Version 1.1\\ September 12, 2026}
 
 \begin{document}
 \maketitle
@@ -66,9 +66,10 @@ it.}}
 This document describes how to use the {\tt fitch.sty} macros for
 typesetting Fitch-style natural deduction derivations. To load the
 macros, simply put |\usepackage[arrayenv=tabular]{fitch}| into the
-preamble of your {\LaTeX} file. \textbf{(If your document uses the |nd|
-environment in math mode, you should specify |arrayenv=array| instead.
-Using |nd| in math mode is no longer recommended.)}
+preamble of your {\LaTeX} file. \NewIn{1.1}\textbf{(If your document
+already uses the |nd| environment in math mode, you should specify
+|arrayenv=array| instead. Using |nd| in math mode is no longer
+recommended.)}
 
 Here is a natural deduction derivation, together with the code that
 produced it:
@@ -107,13 +108,14 @@ shorthand macros used to produce rule names can be customized (see
 Section~\ref{sec-customization}).
 
 \NewIn{1.1} The package now has basic support for PDF tagging.
-However, PDF tagging is incompatible with the |array|
-environment used in prior versions to typeset derivations. For
-compatibility with PDF tagging, use the |tabular| environment instead,
-by loading the package with the option |arrayenv=tabular|. This will
-result in errors if you use the |nd| environment in math mode, so it
-is recommended to use the |fitchproof| environment instead. See
-Section~\ref{sec-usage} and \ref{sec-tagging} for details.
+However, PDF tagging is incompatible with the |array| environment
+still used by default to typeset derivations. For compatibility with
+PDF tagging, use the |tabular| environment instead, by loading the
+package with the option |arrayenv=tabular|. This will result in errors
+if you use the |nd| environment in math mode, so use the |fitchproof|
+environment instead (or delete the |$|\dots|$| around your |nd|
+environments). See Section~\ref{sec-usage} and \ref{sec-tagging} for
+details.
 
 \NewIn{1.0} Several new commands and customization options have been
 introduced in v1.0. It is mostly backwards compatible with earlier
@@ -126,26 +128,31 @@ to |nd@|.
 \DescribeEnv{fitchproof}\DescribeEnv{nd} The environment |fitchproof|
 typesets a derivation as its own paragraph. It only works if you
 generate proofs using the |tabular| environment, e.g., by loading
-|fitch| with the |arrayenv=tabular| option. This will become the
-default in a future release. By default, proofs are set inside a
-|flushleft| environment (with |\topsep| spacing). The environment used
-can be changed using the |proofenv| option (see
+|fitch| with the |arrayenv=tabular| option. By default, proofs are set
+inside a |flushleft| environment (with |\topsep| spacing). The
+environment used can be changed using the |proofenv| option (see
 Section~\ref{sec-customization}).
 
 The |nd| environment is similar, but does not surround the derivation
 in an environment that places it on the page. The derivation itself is
 a table that |fitch| generates using an |array|, |tabular|, or similar
-\LaTeX{} environment. By default, |nd| uses the |array| environment to
-do this, so the |nd| environment must must be used in math mode, i.e.,
-it should be surrounded by |$...$| or |\[...\]|, unless a different
-environment is specified using the |arrayenv| option. This used to be
-the default and recommended way of using |fitch|.
+\LaTeX{} environment. For backwards compatibility, |fitch| uses the
+|array| environment to do this by default (i.e., if loaded without an
+|arrayenv| option). In that case the |nd| environment must must be
+used in math mode, i.e., it must be surrounded by |$|\dots|$| or
+|\[|\dots|\]|, unless a different environment is specified using the
+|arrayenv| option.
 
-\NewIn{1.1} In order to produce accessible PDFs it is
-no longer recommended to use the |nd| environment in math mode with 
-the default |arravenv=array|. Instead, use the |fitchproof| environment (or
+\NewIn{1.1} In order to produce accessible PDFs (see
+section~\ref{sec-tagging}), it is \textbf{no longer recommended} to
+use the |nd| environment in math mode with the default
+|arrayenv=array|. Instead, use the |fitchproof| environment (or
 |fitchproof*|) in text mode, and load the package with the option
-|arrayenv=tabular|. This will become the default in a future release.
+|arrayenv=tabular|. This will become the default in a future release,
+and at that point |nd| in math mode will result in compilation errors.
+The |nd| environment can still be useful, however, e.g., if you want
+to place derivations inside a table or have more direct control over
+its placement.
 
 \DescribeMacro{\hypo}\DescribeMacro{\have}
 The commands |\hypo| and |\have| are used
@@ -153,13 +160,15 @@ to typeset one line of the derivation; |\hypo| is used for
 hypotheses, and |\have| for derived formulas. Both commands take
 a label and a formula as an argument. Note that the labels used to
 identify lines in the derivation need not be actual line numbers; for
-instance, in the above example, we used the label $aa$ instead of $5$.
+instance, in the above example, we used the label |aa| instead of $5$.
 In the output, lines are automatically numbered consecutively. Labels
 may not contain any punctuation characters or spaces.
 
 \DescribeMacro{\open}\DescribeMacro{\close}
 Subderivations are opened and closed with the commands |\open| and
-|\close|. Finally, the following commands are provided for
+|\close|.
+
+Finally, the following commands are provided for
 annotating lines with justifications:
 \begin{center}
 \begin{tabular}[t]{@{}ll@{}}
@@ -203,12 +212,12 @@ the following example:
   \open[v]
   \open[u]
   \hypo {2} {\forall y.P(u,y)}
-  \have {3} {P(u,v)}                     \Ae{2}
-  \have {4} {\exists x.P(x,v)}           \Ei{3}
+  \have {3} {P(u,v)}           \Ae{2}
+  \have {4} {\exists x.P(x,v)} \Ei{3}
   \close
-  \have {5} {\exists x.P(x,v)}           \Ee{1,2-5}
+  \have {5} {\exists x.P(x,v)} \Ee{1,2-5}
   \close
-  \have {6} {\forall y\exists x.P(x,y)}  \Ai{2-5}
+  \have {aa} {\forall y\exists x.P(x,y)}  \Ai{2-5}
 \end{fitchproof}
 \end{LTXexample}
 
@@ -233,28 +242,31 @@ have also been typeset by inserting the two commands |\guard{u}| and
 \subsection{Label and reference list details}\label{subsec-ndref}
 
 Labels for lines given to the |\have| and |\hypo| commands need not be
-numeric, although the package will \emph{output} them as consecutive
-numbers (see Section~\ref{subsec-customline} for how to adjust the
-numbering). Labels, however, may not contain commas, periods,
-semicolons, hyphens, parentheses, or spaces. In a reference list,
-spaces are ignored (even within a label!), whereas commas, periods,
-semicolons, parentheses, and hyphens are copied to the output. All
-other characters are interpreted as part of a label. Attempting to
-reference a label which has not been previously defined by any |\hypo|
-or |\have| command produces a \NewIn{0.6} warning message of the form:
+numeric (or consecutive if they are), but the package will
+\emph{output} them as consecutive numbers (see
+Section~\ref{subsec-customline} for how to adjust the numbering).
+Labels, however, may not contain commas, periods, semicolons, hyphens,
+parentheses, or spaces. In a reference list, spaces are ignored (even
+within a label!), whereas commas, periods, semicolons, parentheses,
+and hyphens are copied to the output. All other characters are
+interpreted as part of a label. Attempting to reference a label which
+has not been previously defined by any |\hypo| or |\have| command
+produces a \NewIn{0.6} warning message of the form:
 \begin{verbatim}
   ! Package fitch Warning: Undefined line reference: lab17.
 \end{verbatim}
 (In earlier versions, this resulted in an error, not a warning.)
 
-\DescribeMacro{\ndref}
-Labels defined in an |nd| environment can be referenced in the
-text with the |\ndref| command. This command takes a reference
-list as an argument, and produces the corresponding output. However,
-it is only possible to reference labels \emph{after} the corresponding
-derivation has been typeset. There is currently no convenient way of
-defining forward references. Also, if a label is used more than once,
-|\ndref| will always refer to the most recent time it was used.
+\DescribeMacro{\ndref} Labels defined in a |fitchproof| or |nd|
+environment can be referenced in the text with the |\ndref| command.
+This command takes a reference list as an argument, and produces the
+corresponding output. However, it is only possible to reference labels
+\emph{after} the corresponding derivation has been typeset. There is
+currently no convenient way of defining forward references. Also, if a
+label is used more than once, |\ndref| will always refer to the most
+recent time it was used. So, e.g., |\ndref{aa}| refers to \ndref{aa}
+(in the preceding derivation) and not to line~5 in the derivation on
+p.~1. |\ndref| produces the label only, no hyperlink.
 
 \subsection{Generic justifications}
 
@@ -386,9 +398,10 @@ number to $7$. The following example illustrates this behavior:
 \end{fitchproof}
 \end{LTXexample}
 
-Note that in the justification for line $m+1$, parentheses had to be
-put around the label $4$. There is currently no way of doing this
-automatically. 
+Note that in the justification for line \ndref{8} (with label~8),
+parentheses had to be put around the label $4$ to produce
+``(\ndref{4})'' and not just ``\ndref{4}''. There is currently no way
+of doing this automatically. 
 
 {\bf Exercise.} How does one typeset an empty line number?
 
@@ -625,12 +638,26 @@ instead of aligned left, use |proofenv=center|.
 
 Currently, the package only provides basic support for automatic
 tagging, i.e., will not prevent PDFs from passing PDF/UA-2 validation.
-Formuals in derivations are converted to MathML if the document is set
-up for that. Numerical line labels in derivations and line number
-references are \emph{not} converted to MathML. The tables resulting
-from |fitchproof| and |nd| environments are tagged as presentation
-tables (since they don't and can't have table headers, which would
-otherwise be required for PDF/UA-2 compliance).
+Formulas in derivations are converted to MathML if the document is set
+up for that (i.e., math tagging is on and the document is produced by
+Lua\LaTeX; see the
+\href{https://ctan.org/tex-archive/macros/latex/required/latex-lab/latex-lab-math.pdf}{|latex-lab-math|}
+documentation.)
+
+\emph{Numerical} line labels in derivations and line number references
+are (by default) \emph{not} converted to MathML, while line labels
+with symbolic references (e.g., ``$n+1$'') are. (This is intended to
+reduce the number of times a screen reader would announce a formula
+when it is not necessary.) 
+
+The tables resulting from |fitchproof| and |nd| environments are
+tagged as tables without table headers. There is currently no way to
+add the scope line information in the PDF tagging structure. So while
+the tagged PDF will pass PDF/UA-2 validation, it will not be fully
+accessible to screen readers since one can't tell from the PDF
+structure alone which lines are hypotheses, how deeply nested a
+formula is, or when a subproof ends and another begins. It is planned
+to rectify this significant shortcoming in a future release.
 
 A more fully accessible way of providing accessible derivations is to
 convert to HTML using
@@ -657,7 +684,7 @@ printed page.
 \section{Copyright and license}
 
 This document and the accompanying |fitch.sty| macros are {\copyright}
-2002--2023 by Peter Selinger and Richard Zach and distributed under
+2002--2026 by Peter Selinger and Richard Zach and distributed under
 the terms of the \href{https://www.latex-project.org/lppl/}{LPPL}.
 
 \end{document}
