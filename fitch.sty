@@ -381,5 +381,40 @@
 \newenvironment{fitchproof*}[1][]
   {\fitchsetouter{#1}\begin{\nd@proofenv}\begin{ndresume}[#1]}
   {\end{ndresume}\end{\nd@proofenv}}
+
+% Compatibility patch for legacy \setkeys usage
+% This redefines \setkeys, which is not great.
+% However, it does at least do it whole-heartedly i.e. it saves and wraps the
+%   original definition rather than trying to patch it, which seems a little
+%   safer. 
+\newcommand\fitch@fix@setkeys{%
+  \let\fitch@saved@setkeys\setkeys
+  \long\def\setkeys##1##2{%
+    \edef\fitch@tempa{fitch}\edef\fitch@tempb{##1}%
+    \ifx\fitch@tempa\fitch@tempb
+      \fitch@warn@setkeys
+      \SetKeys[fitch]{##2}%
+    \else
+      \fitch@saved@setkeys{##1}{##2}%
+    \fi
+  }%
+}
+\newcommand\fitch@warn@setkeys{%
+  \PackageWarning{fitch}{%
+    \noexpand\setkeys is deprecated.
+    Please use \noexpand\fitchset instead%
+  }%
+}
+\AddToHook{pkg/keyval/after}[.]{%
+  \fitch@fix@setkeys
+}
+\IfPackageLoadedTF{keyval}{%
+  \fitch@fix@setkeys
+}{%
+  \newcommand\setkeys[2]{%
+    \fitch@warn@setkeys
+    \SetKeys[#1]{#2}%
+  }%
+}
 % End of file fitch.sty
 
